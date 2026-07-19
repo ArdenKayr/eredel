@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0714">
+<meta name="description" content="Зимняя легенда о чародейке и фиолетовой розе">
+</head>
+<body>
+<title>Легенда о Горной Звезде</title>
+<style>
+  :root{
+    --bg:#0b0714;
+    --ink:#d9d3e6;
+    --ink-dim:#9b91b4;
+    --violet:#b46cff;
+    --violet-deep:#7a3cf0;
+    --ice:#a8c8f0;
+    --ice-bright:#d6e6ff;
+    --glow:#e6c4ff;
+    --display:"Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --serif:Georgia,"Times New Roman",serif;
+  }
+  html,body{background:var(--bg);margin:0;padding:0}
+  body{
+    color:var(--ink);
+    font-family:var(--serif);
+    font-size:1.0625rem;
+    line-height:1.85;
+    -webkit-text-size-adjust:100%;
+    overflow-x:hidden;
+  }
+  @media (min-width:700px){ body{font-size:1.15rem} }
+  ::selection{background:rgba(122,60,240,.45);color:#fff}
+  ::-webkit-scrollbar{width:10px}
+  ::-webkit-scrollbar-track{background:#0b0714}
+  ::-webkit-scrollbar-thumb{background:#2a1e4a;border-radius:5px}
+
+  /* ---------- Декорации эпизодов (за текстом) ---------- */
+  .scenery{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0}
+  #spire svg{position:absolute;bottom:0;left:0;width:100%;height:88vh;display:block}
+  .sp-fog{position:absolute;left:-20%;width:140%;height:15vh;
+    background:linear-gradient(90deg,transparent,rgba(150,180,230,.13),transparent);
+    filter:blur(20px)}
+  .sp-fog.f1{bottom:28vh;animation:fogd 36s ease-in-out infinite alternate}
+  .sp-fog.f2{bottom:54vh;animation:fogd 44s ease-in-out infinite alternate-reverse}
+  #sunsc .sun-core{position:absolute;top:-14vh;left:50%;width:72vmin;height:72vmin;
+    transform:translateX(-50%);border-radius:50%;filter:blur(6px);
+    background:radial-gradient(circle,rgba(255,244,214,.55) 0%,rgba(255,224,160,.28) 30%,rgba(255,200,120,.10) 55%,transparent 72%);
+    animation:sunPulse 7s ease-in-out infinite alternate}
+  @keyframes sunPulse{from{opacity:.85}to{opacity:1}}
+  #sunsc .spring{position:absolute;left:0;right:0;bottom:0;height:34vh;filter:blur(8px);
+    background:linear-gradient(0deg,rgba(96,180,120,.20),rgba(120,200,140,.07) 55%,transparent)}
+  #runes span{position:absolute;font-family:var(--display);font-style:italic;
+    color:rgba(200,170,255,.9);filter:blur(2px);font-size:2.6rem;white-space:nowrap;
+    animation:runeFloat 14s ease-in-out infinite alternate}
+  #runes span:nth-child(2n){animation-delay:-5s;animation-duration:18s}
+  #runes span:nth-child(3n){animation-delay:-9s}
+  @keyframes runeFloat{from{transform:translateY(0)}to{transform:translateY(-14px)}}
+
+  /* ---------- Свет и цвет поверх страницы ---------- */
+  .grade{position:fixed;inset:0;pointer-events:none;z-index:2;opacity:0}
+  .g-warm{background:
+    linear-gradient(0deg,rgba(255,140,60,.17),transparent 20%),
+    radial-gradient(95% 26% at 50% 103%,rgba(255,152,72,.16),transparent 75%),
+    linear-gradient(180deg,rgba(90,48,26,.05),rgba(120,60,28,.07))}
+  .g-cold{background:
+    linear-gradient(180deg,rgba(150,190,255,.06),rgba(46,76,150,.13) 55%,rgba(22,44,105,.2)),
+    radial-gradient(140% 100% at 50% 50%,transparent 52%,rgba(10,24,68,.5))}
+  .g-storm{background:
+    linear-gradient(180deg,rgba(8,10,24,.38),rgba(12,14,32,.5)),
+    radial-gradient(150% 120% at 50% 40%,transparent 38%,rgba(4,5,14,.55))}
+  .g-clear{background:
+    radial-gradient(120% 70% at 50% -5%,rgba(255,238,200,.18),transparent 60%),
+    linear-gradient(180deg,rgba(170,200,255,.07),transparent 55%)}
+  .g-magic{background:
+    radial-gradient(100% 80% at 50% 60%,rgba(122,60,240,.11),transparent 65%)}
+  #rays .ray{position:absolute;top:-12%;height:78%;filter:blur(24px);
+    background:linear-gradient(180deg,rgba(255,244,218,.5),transparent 85%);
+    animation:raysway 9s ease-in-out infinite alternate}
+  #rays .r1{left:16%;width:10%;transform:skewX(-14deg)}
+  #rays .r2{left:38%;width:16%;transform:skewX(-8deg);animation-delay:-3s}
+  #rays .r3{left:64%;width:9%;transform:skewX(-19deg);animation-delay:-6s}
+  @keyframes raysway{from{opacity:.5}to{opacity:1}}
+  .vig{position:fixed;inset:0;pointer-events:none;z-index:2;opacity:.85;background:
+    radial-gradient(130% 100% at 50% 45%,transparent 58%,rgba(4,2,10,.6) 100%)}
+  #frost,#snow{position:fixed;inset:0;z-index:3;pointer-events:none}
+  .grain{position:fixed;inset:0;z-index:5;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-repeat:repeat}
+  .flash{position:fixed;inset:0;z-index:6;pointer-events:none;opacity:0;background:
+    radial-gradient(circle at 50% 55%,rgba(232,214,255,.95),rgba(122,60,240,.45) 40%,transparent 72%)}
+  .flash.on{animation:flashA 1.2s ease-out 1}
+  @keyframes flashA{0%{opacity:0}10%{opacity:.9}100%{opacity:0}}
+
+  .page{position:relative;z-index:1}
+
+  /* ---------- Обложка ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    min-height:100svh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background:linear-gradient(180deg,#060310 0%,#0c0718 52%,#110a1e 100%);
+    padding:0 1.5rem;
+    text-align:center;
+  }
+  .neb{position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none}
+  .neb-a{width:70vmin;height:70vmin;left:-15vmin;top:-10vmin;
+    background:radial-gradient(circle,rgba(122,60,240,.26),transparent 70%);
+    animation:drift 26s ease-in-out infinite alternate}
+  .neb-b{width:60vmin;height:60vmin;right:-18vmin;top:22vh;
+    background:radial-gradient(circle,rgba(70,110,220,.15),transparent 70%);
+    animation:drift 32s ease-in-out infinite alternate-reverse}
+  @keyframes drift{from{transform:translate(0,0)}to{transform:translate(6vmin,4vmin)}}
+
+  .aur{position:absolute;left:-20%;width:140%;pointer-events:none;transform-origin:50% 0;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 18%,#000 68%,transparent 100%);
+    mask-image:linear-gradient(180deg,transparent 0%,#000 18%,#000 68%,transparent 100%)}
+  .aur-a{top:1vh;height:40vh;filter:blur(32px);
+    background:linear-gradient(100deg,transparent 5%,rgba(122,60,240,.22) 30%,rgba(88,196,210,.10) 55%,rgba(140,80,255,.13) 76%,transparent 95%);
+    animation:aur 26s ease-in-out infinite alternate}
+  .aur-b{top:8vh;height:32vh;filter:blur(38px);
+    background:linear-gradient(78deg,transparent 10%,rgba(80,180,220,.12) 40%,rgba(150,90,255,.17) 70%,transparent 92%);
+    animation:aur 34s ease-in-out infinite alternate-reverse}
+  @keyframes aur{
+    from{transform:translateX(-4%) scaleY(1) skewX(-6deg);opacity:.7}
+    to{transform:translateX(4%) scaleY(1.28) skewX(5deg);opacity:1}
+  }
+
+  .stars{position:absolute;inset:0;pointer-events:none}
+  .stars span{position:absolute;border-radius:50%;background:#cfd8ff;
+    animation:tw var(--d,3s) linear var(--dl,0s) infinite alternate}
+  @keyframes tw{from{opacity:.12}to{opacity:.95}}
+
+  .peak-halo{position:absolute;left:50%;bottom:26vh;width:230px;height:230px;margin-left:-115px;
+    pointer-events:none;border-radius:50%;filter:blur(8px);
+    background:radial-gradient(circle,rgba(165,105,255,.30),rgba(160,100,255,.08) 45%,transparent 70%);
+    animation:halo 4.5s ease-in-out infinite}
+  @keyframes halo{0%,100%{opacity:.65;transform:scale(1)}50%{opacity:1;transform:scale(1.12)}}
+  .peak-star{position:absolute;left:50%;bottom:29.5vh;width:78px;height:78px;margin-left:-39px;
+    animation:pulse 4.5s ease-in-out infinite;
+    filter:drop-shadow(0 0 10px rgba(230,196,255,.95)) drop-shadow(0 0 36px rgba(160,92,255,.75)) drop-shadow(0 0 90px rgba(122,60,240,.5))}
+  .peak-star svg{width:100%;height:100%;display:block}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:.95}50%{transform:scale(1.13);opacity:1}}
+
+  .fog{position:absolute;left:-10%;width:120%;height:10vh;bottom:25vh;pointer-events:none;
+    background:linear-gradient(180deg,transparent,rgba(172,192,232,.11),transparent);
+    filter:blur(18px);animation:fogd 40s ease-in-out infinite alternate}
+  @keyframes fogd{from{transform:translateX(-3%)}to{transform:translateX(3%)}}
+
+  .mts{position:absolute;left:0;right:0;bottom:0;width:100%;height:34vh;display:block;pointer-events:none}
+
+  .hero-text{position:relative;z-index:2;margin-bottom:24vh}
+  .ht-kicker{font-family:var(--display);font-size:.95rem;letter-spacing:.55em;text-indent:.55em;
+    text-transform:uppercase;color:var(--ink-dim);margin:0 0 1rem}
+  h1{
+    font-family:var(--display);
+    font-size:clamp(2.5rem,11.5vw,4.8rem);
+    font-weight:400;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    margin:0;
+    line-height:1.16;
+    background:linear-gradient(180deg,#f4f6ff 12%,#c3d2f5 38%,#b98cf5 72%,#8a55d6 100%);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:transparent;
+    text-wrap:balance;
+    filter:drop-shadow(0 0 26px rgba(148,110,240,.45));
+  }
+  .scroll-hint{position:absolute;left:50%;bottom:calc(1.7rem + env(safe-area-inset-bottom));
+    transform:translateX(-50%);z-index:2}
+  .scroll-hint svg{width:24px;height:24px;stroke:var(--violet);stroke-width:2;fill:none;
+    stroke-linecap:round;stroke-linejoin:round;animation:bob 1.8s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(6px);opacity:1}}
+
+  /* ---------- Повесть ---------- */
+  .tale{position:relative;padding:5rem 0 0}
+  .chapter{margin:0 0 5.5rem}
+  .scene{max-width:36rem;margin:0 auto;padding:0 1.4rem}
+  .scene p{margin:0 0 1.5em}
+  .scene p:last-child{margin-bottom:0}
+
+  .cap::first-letter{
+    font-family:var(--display);
+    font-size:3.55em;
+    float:left;
+    line-height:.8;
+    padding:.05em .14em 0 0;
+    color:var(--violet);
+    text-shadow:0 0 18px rgba(160,100,255,.6);
+  }
+
+  .say{color:#cbbce8}
+  .frozen{color:#bcd4f2;letter-spacing:.1em;text-shadow:0 0 14px rgba(150,200,255,.55)}
+
+  /* Пророчество: табличка изо льда и из магического огня */
+  .plaque{position:relative;margin:2.8rem 0;padding:2.1rem 1.5rem;text-align:center;
+    background:linear-gradient(160deg,rgba(150,190,255,.06),rgba(150,190,255,.015) 45%,rgba(100,140,220,.05));
+    border:1px solid rgba(165,195,240,.3);
+    border-radius:2px;
+    box-shadow:inset 0 0 34px rgba(150,190,255,.08),0 6px 42px rgba(10,20,60,.35);
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+  .pc{position:absolute;width:20px;height:20px;pointer-events:none;border:0 solid rgba(200,225,255,.6)}
+  .pc-tl{top:-1px;left:-1px;border-top-width:1.5px;border-left-width:1.5px}
+  .pc-tr{top:-1px;right:-1px;border-top-width:1.5px;border-right-width:1.5px}
+  .pc-bl{bottom:-1px;left:-1px;border-bottom-width:1.5px;border-left-width:1.5px}
+  .pc-br{bottom:-1px;right:-1px;border-bottom-width:1.5px;border-right-width:1.5px}
+  .elvish{font-family:var(--display);font-style:italic;font-size:1.02em;letter-spacing:.05em;
+    color:var(--ice-bright);margin-bottom:.9rem;
+    text-shadow:0 0 16px rgba(170,210,255,.4)}
+  .trans{font-size:.95em;color:var(--ink-dim);font-style:italic}
+  .plaque--fire{
+    background:linear-gradient(160deg,rgba(160,92,255,.09),rgba(122,60,240,.02) 45%,rgba(160,92,255,.07));
+    border-color:rgba(185,130,255,.42);
+    box-shadow:inset 0 0 34px rgba(160,92,255,.12),0 6px 46px rgba(70,20,140,.4)}
+  .plaque--fire .pc{border-color:rgba(215,175,255,.7)}
+  .plaque--fire .elvish{color:var(--glow);text-shadow:0 0 18px rgba(200,150,255,.5)}
+  .trans mark{background:none;color:var(--violet);font-style:normal;font-weight:bold;
+    text-shadow:0 0 16px rgba(180,108,255,.9)}
+
+  .command{text-align:center;margin:3.4rem 0}
+  .command span{display:inline-block;font-family:var(--display);
+    font-size:clamp(2rem,9vw,3.2rem);letter-spacing:.1em;
+    background:linear-gradient(180deg,#f4edff 10%,#b46cff 80%);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:transparent;
+    filter:drop-shadow(0 0 22px rgba(160,92,255,.65))}
+  .command.in span{animation:flare 1.6s ease-out 1}
+  @keyframes flare{
+    0%{filter:drop-shadow(0 0 6px rgba(160,92,255,.2));transform:scale(.94)}
+    45%{filter:drop-shadow(0 0 46px rgba(200,150,255,1));transform:scale(1.03)}
+    100%{filter:drop-shadow(0 0 22px rgba(160,92,255,.65));transform:scale(1)}
+  }
+
+  .name-reveal{text-align:center;font-size:1.12em}
+  .name-reveal em{font-family:var(--display);font-style:normal;font-size:1.5em;letter-spacing:.08em;
+    color:var(--glow);white-space:nowrap;
+    text-shadow:0 0 20px rgba(200,150,255,.7),0 0 60px rgba(122,60,240,.5)}
+
+  /* ---------- Финал ---------- */
+  .finale{position:relative;padding:3.5rem 1.4rem 2.5rem;text-align:center}
+  .finale::before{content:"";position:absolute;left:50%;top:50%;width:130vmin;height:130vmin;
+    transform:translate(-50%,-50%);pointer-events:none;
+    background:radial-gradient(circle,rgba(122,60,240,.12),transparent 60%)}
+  .rose-wrap{position:relative;display:inline-block;margin:0 auto}
+  .rose{width:min(56vw,230px);height:auto;display:block;margin:0 auto;
+    animation:floaty 6s ease-in-out infinite alternate,roseGlow 5s ease-in-out infinite}
+  @keyframes floaty{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+  @keyframes roseGlow{
+    0%,100%{filter:drop-shadow(0 0 16px rgba(160,92,255,.5)) drop-shadow(0 0 50px rgba(122,60,240,.3))}
+    50%{filter:drop-shadow(0 0 26px rgba(190,130,255,.8)) drop-shadow(0 0 85px rgba(122,60,240,.5))}
+  }
+  .sparks{position:absolute;inset:0;pointer-events:none}
+  .sparks span{position:absolute;bottom:22%;width:4px;height:4px;border-radius:50%;
+    background:var(--glow);box-shadow:0 0 8px 2px rgba(200,150,255,.7);opacity:0;
+    animation:riseSpark var(--d,4s) ease-out var(--dl,0s) infinite}
+  @keyframes riseSpark{
+    0%{transform:translateY(0) scale(1);opacity:0}
+    12%{opacity:.9}
+    100%{transform:translateY(-135px) scale(.4);opacity:0}
+  }
+
+  .coda{padding:1.5rem 1.4rem calc(3.8rem + env(safe-area-inset-bottom));text-align:center}
+  .coda-line{height:1px;width:min(42vw,210px);margin:0 auto 1.7rem;
+    background:linear-gradient(90deg,transparent,rgba(180,130,250,.5),transparent)}
+  .coda .elvish{font-size:.92rem;margin-bottom:.5rem}
+  .coda .trans{font-size:.85rem}
+
+  .rv{opacity:0;transform:translateY(22px);transition:opacity .9s ease,transform .9s ease}
+  .rv.in{opacity:1;transform:translateY(0)}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .rv{opacity:1;transform:none}
+  }
+</style>
+
+<div class="scenery" id="spire" aria-hidden="true">
+  <svg viewBox="0 0 800 900" preserveAspectRatio="xMidYMax slice">
+    <defs>
+      <radialGradient id="spGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#8cb4ff" stop-opacity=".26"/>
+        <stop offset="100%" stop-color="#8cb4ff" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <ellipse cx="430" cy="150" rx="210" ry="170" fill="url(#spGlow)"/>
+    <path fill="#101627" opacity=".9" d="M0 900 L0 620 L110 470 L170 560 L280 400 L360 520 L470 380 L580 520 L680 430 L740 520 L800 480 L800 900 Z"/>
+    <path fill="#141c36" d="M-20 900 L60 660 L120 690 L200 490 L235 515 L300 340 L330 360 L400 175 L430 110 L455 150 L470 135 L520 265 L505 282 L575 405 L558 418 L640 565 L618 575 L700 725 L682 733 L760 870 L800 900 Z"/>
+    <path fill="#0e1424" opacity=".85" d="M430 110 L455 150 L470 135 L520 265 L505 282 L575 405 L558 418 L640 565 L618 575 L700 725 L682 733 L760 870 L800 900 L430 900 Z"/>
+    <path fill="#9db8e8" opacity=".5" d="M430 110 L400 175 L418 182 L446 163 L470 135 L455 150 Z"/>
+    <path fill="#7f9ccc" opacity=".22" d="M400 175 L330 360 L352 340 L390 245 Z"/>
+    <path fill="#7f9ccc" opacity=".16" d="M470 135 L520 265 L536 300 L505 282 Z"/>
+    <path fill="none" stroke="#4a659f" stroke-width="2.5" opacity=".6" stroke-linejoin="round" d="M430 110 L400 175 L330 360 L300 340 L235 515 L200 490 L120 690"/>
+    <path fill="none" stroke="#33497a" stroke-width="2" opacity=".45" stroke-linejoin="round" d="M430 110 L455 150 L470 135 L520 265"/>
+    <path fill="#0f1728" d="M40 900 L95 660 L145 715 L215 580 L265 675 L305 900 Z"/>
+    <path fill="#0f1728" d="M540 900 L590 660 L640 715 L705 585 L745 670 L775 900 Z"/>
+  </svg>
+  <div class="sp-fog f1"></div>
+  <div class="sp-fog f2"></div>
+</div>
+
+<div class="scenery" id="sunsc" aria-hidden="true">
+  <div class="sun-core"></div>
+  <div class="spring"></div>
+</div>
+
+<div class="scenery" id="runes" aria-hidden="true">
+  <span style="left:6%;top:16%">Quila</span>
+  <span style="left:56%;top:11%;font-size:3.2rem">amarth-lya</span>
+  <span style="left:12%;top:52%;font-size:3.8rem">Ered-El</span>
+  <span style="left:58%;top:68%">antuva</span>
+  <span style="left:28%;top:33%;font-size:2.1rem">tyen nindë</span>
+  <span style="left:72%;top:42%;font-size:2rem">ar</span>
+</div>
+
+<div class="grade g-warm" id="gWarm" aria-hidden="true"></div>
+<div class="grade g-cold" id="gCold" aria-hidden="true"></div>
+<div class="grade g-storm" id="gStorm" aria-hidden="true"></div>
+<div class="grade g-clear" id="gClear" aria-hidden="true"></div>
+<div class="grade g-magic" id="gMagic" aria-hidden="true"></div>
+<div class="grade" id="rays" aria-hidden="true">
+  <i class="ray r1"></i><i class="ray r2"></i><i class="ray r3"></i>
+</div>
+<div class="vig" aria-hidden="true"></div>
+<canvas id="frost" aria-hidden="true"></canvas>
+<canvas id="snow" aria-hidden="true"></canvas>
+<div class="grain" id="grain" aria-hidden="true"></div>
+<div class="flash" id="flash" aria-hidden="true"></div>
+
+<div class="page">
+
+<header class="hero" data-w="cold:.25,snow:1,wind:.2">
+  <div class="neb neb-a" aria-hidden="true"></div>
+  <div class="neb neb-b" aria-hidden="true"></div>
+  <div class="aur aur-a" aria-hidden="true"></div>
+  <div class="aur aur-b" aria-hidden="true"></div>
+  <div class="stars" id="stars" aria-hidden="true"></div>
+  <div class="peak-halo" aria-hidden="true"></div>
+
+  <div class="peak-star" aria-hidden="true">
+    <svg viewBox="0 0 120 120">
+      <path d="M60 0 L61.8 60 L60 120 L58.2 60 Z" fill="#efe4ff" opacity=".45"/>
+      <path d="M0 60 L60 58.2 L120 60 L60 61.8 Z" fill="#efe4ff" opacity=".45"/>
+      <path d="M60 10 L67.5 52.5 L110 60 L67.5 67.5 L60 110 L52.5 67.5 L10 60 L52.5 52.5 Z" fill="#efe4ff"/>
+    </svg>
+  </div>
+
+  <div class="fog" aria-hidden="true"></div>
+
+  <svg class="mts" viewBox="0 0 1200 320" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="#251c4c" d="M0 320 L0 205 L200 118 L400 185 L600 92 L800 168 L1000 112 L1200 188 L1200 320 Z"/>
+    <path fill="#171132" d="M0 320 L0 230 L150 150 L300 215 L450 120 L600 40 L750 130 L900 200 L1050 150 L1200 230 L1200 320 Z"/>
+    <path fill="#0c081a" d="M0 320 L0 270 L120 210 L260 265 L420 190 L560 250 L700 180 L860 255 L1000 205 L1200 275 L1200 320 Z"/>
+  </svg>
+
+  <div class="hero-text">
+    <p class="ht-kicker">Легенда</p>
+    <h1>о Горной Звезде</h1>
+  </div>
+
+  <div class="scroll-hint" aria-hidden="true">
+    <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+</header>
+
+<main class="tale">
+
+  <section class="chapter" id="ch1" data-w="warm:.9,ember:.45,snow:.3,cold:.05,wind:.06">
+    <div class="scene">
+      <p class="rv cap">Чародейка сидела в глубоком кресле, окутанная уютным полумраком зала. За высокими окнами безмолвно падал снег, но внутри было тепло и безмятежно. В противоположном конце комнаты в камине пылало яркое пламя, у которого, свернувшись клубом, сладко спал кот. По правую руку стоял маленький столик, где в хрустальном бокале замерло недопитое вино, ловящее алые отблески огня. В левой руке она элегантно, одними лишь кончиками пальцев, держала изящную фиолетовую розу, излучающую ореол мерцающих искр.</p>
+      <p class="rv">Взгляд её выразительных карих глаз был прикован к цветку. Она пристально изучала его лепестки, вспоминая, как заполучила эту силу и стала той, кем является по сей день. Прошло уже немало лет, но воспоминания были свежи, будто события тех дней развернулись лишь в прошлые сумерки.</p>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2" data-w="cold:.3,warm:.1,glitter:.25,snow:.7,wind:.2,runes:1">
+    <div class="scene">
+      <p class="rv cap">Тогда она была совсем ещё «зелёной» выпускницей Академии Чародеев. Дочь простых мирян, она с самого детства грезила о том, чтобы заявить о себе, пробившись с самых низов и заставив мир восхищаться своим именем. Поступить в Академию, не имея знатного рода и золота, было почти невозможно, но она смогла, ведомая лишь одной мыслью: однажды она станет величайшей и заслужит истинную славу. Годы изучения магических ритуалов и пыльных свитков привели её к манускрипту на одном из древних мёртвых языков. В нём говорилось о цветке, владелец которого сможет очаровать любого, кого коснётся взглядом. Цена обладания была сокрыта в одной фразе, которую она тогда перевела как призыв к смирению:</p>
+
+      <figure class="plaque rv">
+        <span class="pc pc-tl" aria-hidden="true"></span><span class="pc pc-tr" aria-hidden="true"></span><span class="pc pc-bl" aria-hidden="true"></span><span class="pc pc-br" aria-hidden="true"></span>
+        <div class="elvish">«Quila amarth-lya, ar Ered-El antuva tyen nindë»</div>
+        <div class="trans">«Покорись своей судьбе, и она откроет тебе Горную Звезду»</div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3" data-w="cold:.95,storm:.9,snow:1.7,wind:1,spire:1">
+    <div class="scene">
+      <p class="rv cap">Эта фраза привела её в заснеженные горы, где она уже вторую неделю скиталась по морозу, пробирающему до самых костей. Метель хлестала по лицу, а ледяной ветер, казалось, пытался вырвать саму душу, но она знала, что идёт верно — к вершине самого огромного ледяного пика Империи. Наконец, из последних сил, она выбралась на плато.</p>
+      <p class="rv">Перед ней, среди танцующих хлопьев снега, высились с десяток ледяных статуй. Они стояли на коленях, склонив головы в безмолвной молитве перед прозрачным постаментом, в глубине которого сияла фиолетовая роза необычайной красоты. Чародейка, повинуясь пророчеству, быстро упала на колени подобно статуям и опустила голову. Она сидела почти неподвижно, лишь мелкая дрожь сотрясала её измученное тело. Но ничего не происходило.</p>
+      <p class="rv">Тогда она просипела, стуча зубами от невыносимой стужи:</p>
+      <p class="rv say">— Духи этого места… склонив голову, я взываю к вам. Примите мою жертву, я покорно молю о вашей милости…</p>
+      <p class="rv">Но лишь завывание вьюги было ей ответом. Чародейка чувствовала, что силы её на исходе, а сердце замедляет свой бег. Она повернула голову в поиске хоть какой-то подсказки, и глаза её наполнились слезами: посмотрев на ближайшую статую, она увидела, что под слоем льда и инея скрывается настоящий человек. На его лице навсегда застыло выражение покорности. Все они были чародеями, пришедшими сюда за силой; они склонились точно так же и замёрзли насмерть, надеясь на милость, которой не существует.</p>
+      <p class="rv say frozen">— Это конец… — прошептала она, чувствуя, как ноги окончательно становятся частью льда.</p>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4" data-w="cold:.9,storm:.8,snow:1.5,wind:.9,spire:1">
+    <div class="scene">
+      <p class="rv cap">Она закрыла глаза, готовясь стать очередным изваянием в этом саду смиренных. Сознание начало мутнеть, и в голове бесконечно кружился текст: «Покорись своей судьбе, и она откроет тебе Горную Звезду…» И тут её глаза распахнулись. В предсмертной вспышке ясности она вдруг заметила то, что ранее ускользало от её разума. Она вспомнила структуру древнего наречия, нюанс, который менял всё. Глагол «Quila» в сочетании с суффиксом «-а» не был пассивным залогом. Это был каузатив — побудительная форма, требующая от субъекта проявления воли над объектом.</p>
+      <p class="rv">Верным переводом фразы было:</p>
+
+      <figure class="plaque plaque--fire rv">
+        <span class="pc pc-tl" aria-hidden="true"></span><span class="pc pc-tr" aria-hidden="true"></span><span class="pc pc-bl" aria-hidden="true"></span><span class="pc pc-br" aria-hidden="true"></span>
+        <div class="elvish">«Quila amarth-lya, ar Ered-El antuva tyen nindë»</div>
+        <div class="trans">«<mark>Покори</mark> свою судьбу, и она откроет тебе Горную Звезду»</div>
+      </figure>
+
+      <p class="rv">Разум стал кристально чистым. Она попробовала встать, но онемевшие ноги повалили её на землю. Тогда, рыча от ярости, она впилась ногтями в плечо стоящей рядом статуи и, опершись на холодный труп своего предшественника, всё же смогла подняться. Из последних сил она выпрямила спину и, пронзив взглядом сердцевину магического пьедестала, выпалила:</p>
+
+      <div class="command rv" id="cmd"><span>— Служи мне!</span></div>
+
+      <p class="rv">Её голос, сорванный ветром, звучал жёстко и властно, отдаваясь эхом от облаков. Гора задрожала. Лёд не растаял — он взорвался, осыпав её сверкающей крошкой, словно триумфальным салютом. Роза, освобождённая от плена, вспыхнула яростным фиолетовым огнём, повиснув в воздухе перед её лицом. Она протянула руку и сжала стебель голой ладонью.</p>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5" data-w="sun:1,clear:.7,rays:.8,glitter:.5,snow:.05,wind:.08,spire:.12">
+    <div class="scene">
+      <p class="rv cap">Магическое пламя лизнуло кожу, проверяя её волю на прочность, но не оставило ожогов. Цветок признал госпожу. Древняя сила хлынула в её вены, навсегда стирая страх и неуверенность прошлой жизни. Оглянувшись, чародейка поняла, что вокруг больше нет метели, а в небе ослепительно сияет солнце.</p>
+      <p class="rv">Позади раздался тяжёлый хрип. Обернувшись, она увидела, что на месте статуй, тяжело дыша и содрогаясь, лежат те, кто прежде был льдом. Один из них поднялся и, пошатываясь, подошёл ближе, глядя на неё с благоговением:</p>
+      <p class="rv say">— Вы… Вы спасли нас, миледи. Как ваше имя?</p>
+      <p class="rv">Чародейка посмотрела на цветок в своей руке и произнесла, улыбнувшись:</p>
+      <p class="rv name-reveal">— Я — Горная Звезда.<br>Моё имя — <em>Эредель</em>.</p>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch6" data-w="warm:.85,ember:.45,snow:.4,cold:.05,wind:.08,glitter:.15">
+    <div class="scene">
+      <p class="rv cap">Та зима стала началом её возвышения. Она спасла великих мастеров, и рассказы об этом мгновенно разлетелись по Империи. В столице она быстро стала почтенной дамой, и многие особы голубых кровей почитали за честь видеть её на своих приёмах. Барды воспевали её историю, и хоть настоящие события были и без того полны поэзии, они умудрялись приукрашивать их ещё сильнее. Но чародейка была совсем не против — ей нравилось то, как всё вышло. Среди людей ходили слухи о её прекрасных карих глазах, которые способны расположить к ней любого или заставить трепетать — было ли это заслугой цветка или эффектом её новой личности, Эредель не знала, да и не испытывала желания проверять.</p>
+      <p class="rv">Мурлыканье кота, который проснулся и теперь тёрся шерстью о её ноги, требуя внимания, вырвало Эредель из сладостных воспоминаний. Кот ловко прыгнул на колени чародейки и стал умываться, после чего, довольный, улёгся на неё и начал громко мурчать.</p>
+      <p class="rv">А ей всё равно некуда было спешить. Она получила свой заслуженный отдых и славу, ведь теперь все и так знают о чародейке с фиолетовой розой по имени Эредель.</p>
+    </div>
+  </section>
+
+  <section id="fin" data-w="warm:.45,glitter:.6,snow:.2,rays:.2,cold:.05,sun:.2">
+    <div class="finale rv">
+      <div class="rose-wrap">
+        <svg class="rose" viewBox="0 0 220 220" aria-hidden="true">
+          <defs>
+            <radialGradient id="aura" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#a05cff" stop-opacity=".5"/>
+              <stop offset="60%" stop-color="#7a3cf0" stop-opacity=".16"/>
+              <stop offset="100%" stop-color="#7a3cf0" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="pOut" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#6d34c4"/>
+              <stop offset="100%" stop-color="#38175f"/>
+            </linearGradient>
+            <linearGradient id="pMid" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#9a5ce8"/>
+              <stop offset="100%" stop-color="#54248f"/>
+            </linearGradient>
+            <linearGradient id="pIn" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#c79bff"/>
+              <stop offset="100%" stop-color="#7a3cc9"/>
+            </linearGradient>
+          </defs>
+          <circle cx="110" cy="110" r="104" fill="url(#aura)"/>
+          <g transform="rotate(0 110 110)"><ellipse cx="110" cy="66" rx="30" ry="44" fill="url(#pOut)" stroke="#8b5cf6" stroke-opacity=".3"/></g>
+          <g transform="rotate(60 110 110)"><ellipse cx="110" cy="66" rx="30" ry="44" fill="url(#pOut)" stroke="#8b5cf6" stroke-opacity=".3"/></g>
+          <g transform="rotate(120 110 110)"><ellipse cx="110" cy="66" rx="30" ry="44" fill="url(#pOut)" stroke="#8b5cf6" stroke-opacity=".3"/></g>
+          <g transform="rotate(180 110 110)"><ellipse cx="110" cy="66" rx="30" ry="44" fill="url(#pOut)" stroke="#8b5cf6" stroke-opacity=".3"/></g>
+          <g transform="rotate(240 110 110)"><ellipse cx="110" cy="66" rx="30" ry="44" fill="url(#pOut)" stroke="#8b5cf6" stroke-opacity=".3"/></g>
+          <g transform="rotate(300 110 110)"><ellipse cx="110" cy="66" rx="30" ry="44" fill="url(#pOut)" stroke="#8b5cf6" stroke-opacity=".3"/></g>
+          <g transform="rotate(30 110 110)"><ellipse cx="110" cy="78" rx="24" ry="36" fill="url(#pMid)" stroke="#a985ec" stroke-opacity=".3"/></g>
+          <g transform="rotate(90 110 110)"><ellipse cx="110" cy="78" rx="24" ry="36" fill="url(#pMid)" stroke="#a985ec" stroke-opacity=".3"/></g>
+          <g transform="rotate(150 110 110)"><ellipse cx="110" cy="78" rx="24" ry="36" fill="url(#pMid)" stroke="#a985ec" stroke-opacity=".3"/></g>
+          <g transform="rotate(210 110 110)"><ellipse cx="110" cy="78" rx="24" ry="36" fill="url(#pMid)" stroke="#a985ec" stroke-opacity=".3"/></g>
+          <g transform="rotate(270 110 110)"><ellipse cx="110" cy="78" rx="24" ry="36" fill="url(#pMid)" stroke="#a985ec" stroke-opacity=".3"/></g>
+          <g transform="rotate(330 110 110)"><ellipse cx="110" cy="78" rx="24" ry="36" fill="url(#pMid)" stroke="#a985ec" stroke-opacity=".3"/></g>
+          <g transform="rotate(0 110 110)"><ellipse cx="110" cy="92" rx="17" ry="26" fill="url(#pIn)"/></g>
+          <g transform="rotate(90 110 110)"><ellipse cx="110" cy="92" rx="17" ry="26" fill="url(#pIn)"/></g>
+          <g transform="rotate(180 110 110)"><ellipse cx="110" cy="92" rx="17" ry="26" fill="url(#pIn)"/></g>
+          <g transform="rotate(270 110 110)"><ellipse cx="110" cy="92" rx="17" ry="26" fill="url(#pIn)"/></g>
+          <circle cx="110" cy="110" r="13" fill="#e9d5ff"/>
+          <path d="M110 99 a11 11 0 1 1 -11 11 a8 8 0 1 0 8 -8" fill="none" stroke="#7a3cc9" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <div class="sparks" id="sparks" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <footer class="coda">
+      <div class="coda-line rv" aria-hidden="true"></div>
+      <div class="elvish rv">«Quila amarth-lya, ar Ered-El antuva tyen nindë»</div>
+      <div class="trans rv">Покори свою судьбу — и она откроет тебе Горную Звезду</div>
+    </footer>
+  </section>
+
+</main>
+
+</div>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Звёзды на обложке */
+  var stars = document.getElementById('stars');
+  var i, s;
+  for(i = 0; i < 90; i++){
+    s = document.createElement('span');
+    var size = (Math.random() * 1.7 + .7).toFixed(1);
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.left = (Math.random() * 100).toFixed(2) + '%';
+    s.style.top = (Math.random() * 62).toFixed(2) + '%';
+    s.style.setProperty('--d', (Math.random() * 3 + 1.8).toFixed(1) + 's');
+    s.style.setProperty('--dl', (Math.random() * 4).toFixed(1) + 's');
+    if(reduce){ s.style.opacity = (Math.random() * .6 + .3).toFixed(2); }
+    stars.appendChild(s);
+  }
+
+  /* Искры вокруг розы */
+  var sparks = document.getElementById('sparks');
+  for(i = 0; i < 9; i++){
+    s = document.createElement('span');
+    s.style.left = (12 + Math.random() * 76).toFixed(1) + '%';
+    s.style.setProperty('--d', (Math.random() * 2.5 + 3).toFixed(1) + 's');
+    s.style.setProperty('--dl', (Math.random() * 5).toFixed(1) + 's');
+    sparks.appendChild(s);
+  }
+
+  /* Зерно плёнки */
+  (function(){
+    var g = document.createElement('canvas');
+    g.width = g.height = 96;
+    var gx = g.getContext('2d');
+    var im = gx.createImageData(96, 96);
+    for(var k = 0; k < im.data.length; k += 4){
+      var v = 120 + Math.random() * 135 | 0;
+      im.data[k] = v; im.data[k+1] = v; im.data[k+2] = v;
+      im.data[k+3] = 255;
+    }
+    gx.putImageData(im, 0, 0);
+    document.getElementById('grain').style.backgroundImage = 'url(' + g.toDataURL() + ')';
+  })();
+
+  /* Появление текста при прокрутке + вспышка на «Служи мне!» */
+  var boomDone = false;
+  var revealed = document.querySelectorAll('.rv');
+  function onReveal(el){
+    el.classList.add('in');
+    if(el.id === 'cmd' && !reduce) boom();
+  }
+  if(reduce || !('IntersectionObserver' in window)){
+    revealed.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ onReveal(e.target); io.unobserve(e.target); }
+      });
+    },{ rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+    revealed.forEach(function(el){ io.observe(el); });
+  }
+
+  /* ---------- Погодный движок: атмосфера следует за сюжетом ---------- */
+  var KEYS = ['cold','warm','storm','clear','glitter','snow','wind','ember','spire','rays','runes','sun'];
+  function parseW(str){
+    var o = {cold:0,warm:0,storm:0,clear:0,glitter:0,snow:1,wind:.15,ember:0,spire:0,rays:0,runes:0,sun:0};
+    str.split(',').forEach(function(p){
+      var kv = p.split(':');
+      o[kv[0].trim()] = parseFloat(kv[1]);
+    });
+    return o;
+  }
+  var state = parseW('cold:.25,snow:1,wind:.2');
+  var target = parseW('cold:.25,snow:1,wind:.2');
+  var sections = document.querySelectorAll('[data-w]');
+  var activeSec = null;
+  sections.forEach(function(sec){ sec._w = parseW(sec.getAttribute('data-w')); });
+
+  var gWarm = document.getElementById('gWarm'),
+      gCold = document.getElementById('gCold'),
+      gStorm = document.getElementById('gStorm'),
+      gClear = document.getElementById('gClear'),
+      gMagic = document.getElementById('gMagic'),
+      gRays = document.getElementById('rays'),
+      scSpire = document.getElementById('spire'),
+      scRunes = document.getElementById('runes'),
+      scSun = document.getElementById('sunsc');
+
+  if(reduce){
+    gCold.style.opacity = .25;
+    return;
+  }
+
+  var wio = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ activeSec = e.target; target = e.target._w; }
+    });
+  },{ rootMargin: '-42% 0px -42% 0px', threshold: 0 });
+  sections.forEach(function(sec){ wio.observe(sec); });
+
+  /* Частицы: снег, сияющая пыль, угольки камина, осколки льда */
+  var c = document.getElementById('snow');
+  var ctx = c.getContext('2d');
+  var fc = document.getElementById('frost');
+  var fctx = fc.getContext('2d');
+  var W, H, dpr;
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    c.width = W * dpr; c.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    fc.width = W * dpr; fc.height = H * dpr;
+    fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    genFrost();
+  }
+
+  var flakes = [];
+  function newFlake(edge){
+    var wSnow = Math.max(state.snow, 0),
+        wGlit = state.glitter * .65,
+        wEmb = state.ember * .55;
+    var rnd = Math.random() * (wSnow + wGlit + wEmb + .0001);
+    var t = rnd < wSnow ? 0 : (rnd < wSnow + wGlit ? 1 : 2);
+    return {
+      t: t,
+      x: Math.random() * W,
+      y: edge ? (t === 2 ? H + 6 : -6) : Math.random() * H,
+      r: t === 1 ? Math.random() * .9 + .6 : (t === 2 ? Math.random() * 1 + .7 : Math.random() * 1.9 + .8),
+      vy: t === 1 ? Math.random() * .2 + .08 : (t === 2 ? Math.random() * .35 + .2 : Math.random() * .5 + .25),
+      ph: Math.random() * Math.PI * 2,
+      tw: Math.random() * Math.PI * 2,
+      a: Math.random() * .45 + .25
+    };
+  }
+
+  /* Морозные узоры, нарастающие на «стекле» экрана */
+  var segs = [], frostShown = 0, melting = false;
+  function growSeed(x, y, a, reach){
+    var out = [], q = [{x:x, y:y, a:a, life:reach, w:1.3}];
+    while(q.length && out.length < 320){
+      var n = q.shift();
+      var L = 4 + Math.random() * 7;
+      var na = n.a + (Math.random() - .5) * .6;
+      var nx = n.x + Math.cos(na) * L, ny = n.y + Math.sin(na) * L;
+      out.push([n.x, n.y, nx, ny, n.w,
+        Math.random() < .3 ? 'rgba(225,240,255,.5)' : 'rgba(170,205,250,.3)']);
+      var life = n.life - L;
+      if(life > 0) q.push({x:nx, y:ny, a:na, life:life, w:Math.max(.5, n.w * .985)});
+      if(Math.random() < .3 && life > 12)
+        q.push({x:nx, y:ny, a:na + (Math.random() < .5 ? 1 : -1) * (.65 + Math.random() * .45),
+                life:life * .45, w:Math.max(.4, n.w * .8)});
+    }
+    return out;
+  }
+  function genFrost(){
+    var m = Math.min(W, H);
+    var PI = Math.PI;
+    var seeds = [
+      [0,0,PI/4,.30*m],[W,0,3*PI/4,.30*m],[0,H,-PI/4,.30*m],[W,H,-3*PI/4,.30*m],
+      [W*.3,0,PI/2,.15*m],[W*.7,0,PI/2,.15*m],
+      [W*.3,H,-PI/2,.15*m],[W*.7,H,-PI/2,.15*m],
+      [0,H*.45,0,.12*m],[W,H*.45,PI,.12*m]
+    ];
+    var lists = seeds.map(function(sd){ return growSeed(sd[0], sd[1], sd[2], sd[3]); });
+    segs = [];
+    var maxLen = Math.max.apply(null, lists.map(function(l){ return l.length; }));
+    for(var k = 0; k < maxLen; k++)
+      for(var j = 0; j < lists.length; j++)
+        if(k < lists[j].length) segs.push(lists[j][k]);
+    frostShown = 0;
+    fctx.clearRect(0, 0, W, H);
+    fc.style.transition = 'none';
+    fc.style.opacity = 1;
+    fctx.lineCap = 'round';
+  }
+  function frostGrow(frac){
+    var n = Math.min(Math.floor(segs.length * frac), frostShown + 40);
+    for(var k = frostShown; k < n; k++){
+      var sg = segs[k];
+      fctx.strokeStyle = sg[5];
+      fctx.lineWidth = sg[4];
+      fctx.beginPath();
+      fctx.moveTo(sg[0], sg[1]);
+      fctx.lineTo(sg[2], sg[3]);
+      fctx.stroke();
+    }
+    if(n > frostShown) frostShown = n;
+  }
+
+  /* Осколки льда при «Служи мне!» */
+  var shards = [];
+  var flashEl = document.getElementById('flash');
+  function boom(){
+    if(boomDone) return;
+    boomDone = true;
+    var el = document.getElementById('cmd');
+    var r = el.getBoundingClientRect();
+    var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    for(var k = 0; k < 54; k++){
+      var an = Math.random() * 6.283, sp = 2.5 + Math.random() * 7;
+      shards.push({x:cx, y:cy, vx:Math.cos(an) * sp, vy:Math.sin(an) * sp - 2.2,
+        rot:Math.random() * 6.28, vr:(Math.random() - .5) * .3,
+        len:5 + Math.random() * 13, life:1, ci:k % 3});
+    }
+    flashEl.classList.add('on');
+    var after = parseW('cold:.25,glitter:1,clear:.5,sun:.45,snow:.2,wind:.15,spire:.4,rays:.5');
+    var ch4 = document.getElementById('ch4');
+    ch4._w = after;
+    if(activeSec === ch4) target = after;
+  }
+
+  resize();
+  var baseCount = Math.min(120, Math.round(W / 6));
+  var n0 = Math.round(baseCount * .8);
+  for(i = 0; i < n0; i++) flakes.push(newFlake(false));
+  window.addEventListener('resize', function(){
+    if(window.innerWidth !== W || Math.abs(window.innerHeight - H) > 150) resize();
+  });
+
+  var running = true, frame = 0;
+  var gust = 0, gustStart = -9999, gustDur = 2000, nextGust = 3000;
+  var shardCols = ['#dcecff', '#c9a0ff', '#9fd4ff'];
+
+  function tick(ts){
+    if(!running) return;
+    frame++;
+
+    for(var k = 0; k < KEYS.length; k++){
+      var key = KEYS[k];
+      state[key] += (target[key] - state[key]) * .03;
+    }
+
+    var flick = .88 + .12 * (.6 * Math.sin(ts * .004) + .4 * Math.sin(ts * .013 + 1.7));
+    gWarm.style.opacity = (state.warm * flick).toFixed(3);
+    gCold.style.opacity = (state.cold * .9).toFixed(3);
+    gStorm.style.opacity = (state.storm * .85).toFixed(3);
+    gClear.style.opacity = state.clear.toFixed(3);
+    gMagic.style.opacity = (state.glitter * .8).toFixed(3);
+    gRays.style.opacity = (state.rays * .5).toFixed(3);
+    scSpire.style.opacity = (state.spire * .55).toFixed(3);
+    scRunes.style.opacity = (state.runes * .085).toFixed(3);
+    scSun.style.opacity = (state.sun * .9).toFixed(3);
+
+    var frac = segs.length ? frostShown / segs.length : 0;
+    var fT = Math.max(0, Math.min(1, (state.cold - .4) / .5));
+    if(!melting){
+      if(fT > frac + .005){ frostGrow(fT); }
+      else if(frac - fT > .3){
+        melting = true;
+        fc.style.transition = 'opacity 2.8s ease';
+        fc.style.opacity = 0;
+        setTimeout(function(){
+          fctx.clearRect(0, 0, W, H);
+          frostShown = 0;
+          melting = false;
+          fc.style.transition = 'none';
+          fc.style.opacity = 1;
+        }, 3000);
+      }
+    }
+
+    if(ts > nextGust){
+      gustStart = ts;
+      gustDur = 1800 + Math.random() * 1500;
+      nextGust = ts + 4000 + Math.random() * 6000;
+    }
+    var gp = (ts - gustStart) / gustDur;
+    gust = gp < 1 ? Math.sin(gp * Math.PI) * state.storm : 0;
+    var windX = state.wind * (1.2 + gust * 2.2);
+
+    var want = Math.round(baseCount * Math.max(state.snow + state.storm * .7 + state.glitter * .5 + state.ember * .6, .15));
+    if(flakes.length < want && frame % 2 === 0) flakes.push(newFlake(true));
+    else if(flakes.length > want && frame % 4 === 0) flakes.pop();
+
+    ctx.clearRect(0, 0, W, H);
+    for(k = 0; k < flakes.length; k++){
+      var f = flakes[k];
+      var vy;
+      if(f.t === 2){
+        vy = -f.vy;
+        f.y += vy;
+        f.x += Math.sin(ts * .002 + f.ph) * .3 + windX * .2;
+      } else {
+        vy = f.vy * (.5 + f.r * .45) * (f.t === 1 ? 1 : 1 + state.storm * 2.4);
+        f.y += vy;
+        f.x += Math.sin(ts * .0009 + f.ph) * (f.t === 1 ? .2 : .35) + windX * (f.t === 1 ? .3 : f.r * .5);
+      }
+      if(f.t === 2 ? f.y < -10 : f.y > H + 8){ flakes[k] = newFlake(true); f = flakes[k]; continue; }
+      if(f.x > W + 10) f.x = -9;
+      if(f.x < -10) f.x = W + 9;
+      if(f.t === 1){
+        var al = f.a * (.45 + .55 * Math.sin(ts * .004 + f.tw));
+        if(al < 0) al = 0;
+        ctx.globalAlpha = al;
+        ctx.fillStyle = '#e6d7ff';
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, 6.2832);
+        ctx.fill();
+        if(al > f.a * .85){
+          ctx.globalAlpha = al * .6;
+          ctx.strokeStyle = '#e6d7ff';
+          ctx.lineWidth = .7;
+          ctx.beginPath();
+          ctx.moveTo(f.x - f.r * 3, f.y); ctx.lineTo(f.x + f.r * 3, f.y);
+          ctx.moveTo(f.x, f.y - f.r * 3); ctx.lineTo(f.x, f.y + f.r * 3);
+          ctx.stroke();
+        }
+      } else if(f.t === 2){
+        var ea = f.a * (.5 + .5 * Math.sin(ts * .006 + f.tw));
+        if(ea < 0) ea = 0;
+        ctx.globalAlpha = ea * .22;
+        ctx.fillStyle = '#ff8a3c';
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r * 2.6, 0, 6.2832);
+        ctx.fill();
+        ctx.globalAlpha = ea;
+        ctx.fillStyle = '#ffc98f';
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, 6.2832);
+        ctx.fill();
+      } else {
+        ctx.globalAlpha = f.a;
+        ctx.fillStyle = '#e8eeff';
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, 6.2832);
+        ctx.fill();
+      }
+    }
+
+    for(k = shards.length - 1; k >= 0; k--){
+      var sh = shards[k];
+      sh.life -= .013;
+      if(sh.life <= 0){ shards.splice(k, 1); continue; }
+      sh.x += sh.vx; sh.y += sh.vy;
+      sh.vy += .09; sh.vx *= .985; sh.rot += sh.vr;
+      ctx.save();
+      ctx.translate(sh.x, sh.y);
+      ctx.rotate(sh.rot);
+      ctx.globalAlpha = Math.min(1, sh.life * 1.4);
+      ctx.strokeStyle = shardCols[sh.ci];
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(-sh.len / 2, 0);
+      ctx.lineTo(sh.len / 2, 0);
+      ctx.stroke();
+      ctx.restore();
+    }
+    ctx.globalAlpha = 1;
+
+    requestAnimationFrame(tick);
+  }
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden){ running = false; }
+    else if(!running){ running = true; requestAnimationFrame(tick); }
+  });
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
